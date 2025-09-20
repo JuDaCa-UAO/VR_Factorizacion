@@ -97,3 +97,18 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# IDEs
+.idea/
+.vscode/
+*.code-workspace
+
+# SO (ruido de Windows/Mac)
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Firmas Android (¡nunca subas tus llaves!)
+*.keystore
+*.jks
+
