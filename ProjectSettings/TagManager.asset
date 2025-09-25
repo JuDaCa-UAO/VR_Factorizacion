@@ -3,16 +3,21 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Water
+  - TipoA
+  - TipoB
+  - TipoC
+  - TipoD
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - particulas
   - Water
   - UI
-  - 
-  - 
+  - Fuego
+  - HandUI
   - 
   - 
   - 
