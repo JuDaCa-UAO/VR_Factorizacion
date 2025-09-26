@@ -9,11 +9,12 @@ TagManager:
   - TipoB
   - TipoC
   - TipoD
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - particulas
+  - Blocks
   - Water
   - UI
   - Fuego
