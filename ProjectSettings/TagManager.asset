@@ -5,11 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Water
-  - TipoA
-  - TipoB
-  - TipoC
   - TipoD
   - FxTemporaire
+  - X2
+  - X
+  - One
   layers:
   - Default
   - TransparentFX
@@ -17,7 +17,7 @@ TagManager:
   - Blocks
   - Water
   - UI
-  - Fuego
+  - Slots
   - HandUI
   - 
   - 

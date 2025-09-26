@@ -1,23 +1,23 @@
-using UnityEngine;
-using UnityEngine.InputSystem; // Input System (Mouse)
+Ôªøusing UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BlockDragger : MonoBehaviour
 {
     [SerializeField] Camera cam;
-    [SerializeField] LayerMask blockMask = ~0; // filtra si usas la capa "Blocks"
-    [SerializeField] float followSpeed = 20f;   // suavidad al seguir el mouse
-    [SerializeField] float liftWhileDrag = 0.05f; // pequeÒo ìlevantamientoî visual
+
+    [Header("Layers")]
+    [SerializeField] LayerMask blockLayer; // capa de los bloques (p.ej. "Blocks")
+
+    [Header("Movimiento")]
+    [SerializeField] float followSpeed = 20f;
+    [SerializeField] float magnetStrength = 10f; // fuerza del im√°n hacia el SnapPoint
 
     Rigidbody held;
-    Plane dragPlane;
-    float fixedY;              // altura a la que ìplaneaî mientras arrastras
-    Vector3 grabOffset;        // punto de agarre relativo al centro del rigidbody
-    float origDrag, origAngDrag;
+    GameObject heldGO;
+    Plane dragPlane;                 // plano a la altura del bloque
+    SnapZoneSimple hoverZone = null; // slot hacia el que nos ‚Äúimanta‚Äù
 
-    void Awake()
-    {
-        if (!cam) cam = Camera.main;
-    }
+    void Awake() { if (!cam) cam = Camera.main; }
 
     void Update()
     {
@@ -31,54 +31,75 @@ public class BlockDragger : MonoBehaviour
     void TryPick()
     {
         var ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (Physics.Raycast(ray, out var hit, 1000f, blockMask))
-        {
-            var rb = hit.rigidbody ?? hit.collider.attachedRigidbody;
-            if (rb == null) return;
+        if (!Physics.Raycast(ray, out var hit, 1000f, blockLayer, QueryTriggerInteraction.Ignore)) return;
 
-            held = rb;
+        var rb = hit.rigidbody ?? hit.collider.attachedRigidbody;
+        if (!rb) return;
 
-            // Guardar estado original y ìprepararî el rigidbody
-            origDrag = held.drag; origAngDrag = held.angularDrag;
-            held.useGravity = false;     // que no caiga mientras lo mueves
-            held.drag = 20f;             // amortigua movimientos bruscos
-            held.angularDrag = 20f;
+        // si ya est√° pegado, no permitir tomarlo
+        var st = rb.GetComponent<BlockSnapState>();
+        if (st && st.isSnapped) return;
 
-            // Plano de arrastre ìa la altura del bloqueî
-            fixedY = held.position.y;
-            dragPlane = new Plane(Vector3.up, new Vector3(0f, fixedY, 0f));
+        held = rb;
+        heldGO = rb.gameObject;
 
-            // Offset desde el centro del rb al punto donde hiciste click
-            grabOffset = hit.point - held.worldCenterOfMass;
-        }
+        dragPlane = new Plane(Vector3.up, held.position);
+
+        held.isKinematic = true;
+        held.useGravity = false;
     }
 
     void Drag()
     {
         var ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (dragPlane.Raycast(ray, out float enter))
+        if (!dragPlane.Raycast(ray, out float enter)) return;
+
+        var hitPoint = ray.GetPoint(enter);
+        var target = hitPoint; target.y = held.position.y;
+
+        // Buscar slot m√°s cercano por distancia al SnapPoint
+        SnapZoneSimple best = null; float bestD = float.MaxValue;
+        var zones = Object.FindObjectsByType<SnapZoneSimple>(FindObjectsSortMode.None);
+        foreach (var z in zones)
         {
-            var hitPoint = ray.GetPoint(enter);
-
-            // MantÈn la misma altura (fixedY) y respeta el punto de agarre
-            var target = hitPoint - grabOffset;
-            target.y = fixedY + liftWhileDrag;
-
-            // Movimiento suave y ìfÌsicoî
-            var next = Vector3.Lerp(held.position, target, Time.deltaTime * followSpeed);
-            held.MovePosition(next);
+            float d = z.DistanceTo(held.position);
+            if (d < bestD) { bestD = d; best = z; }
         }
+
+        // Si estamos dentro del radio del mejor slot compatible ‚Üí ‚Äúim√°n‚Äù
+        if (best && best.Matches(heldGO) && bestD <= best.captureRadius)
+        {
+            var sp = best.SnapPoint.position; sp.y = held.position.y;
+            target = Vector3.Lerp(target, sp, Time.deltaTime * magnetStrength);
+            hoverZone = best;
+        }
+        else
+        {
+            hoverZone = null;
+        }
+
+        var next = Vector3.Lerp(held.position, target, Time.deltaTime * followSpeed);
+        held.MovePosition(next);
     }
 
     void Drop()
     {
-        if (held == null) return;
+        if (!held) return;
 
-        // Restituir estado del rigidbody
-        held.useGravity = true;
-        held.drag = origDrag;
-        held.angularDrag = origAngDrag;
+        // Si ten√≠amos una zona ‚Äúmagn√©tica‚Äù v√°lida, pegamos sin exigir precisi√≥n
+        if (hoverZone && hoverZone.Matches(heldGO))
+        {
+            hoverZone.Snap(held); // fija kinematic + parent + marca estado
+        }
+        else
+        {
+            held.isKinematic = false;
+            held.useGravity = true;
+            held.transform.SetParent(null, true);
+        }
 
         held = null;
+        heldGO = null;
+        hoverZone = null;
     }
 }
