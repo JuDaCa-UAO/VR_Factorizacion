@@ -91,10 +91,18 @@ public class Dialogue : MonoBehaviour
         // Transición: estaba reproduciendo y ahora no, y el clip NO cambió -> probable desactivación
         if (!isPlaying && lastIsPlaying && !clipChanged && currentClip != null)
         {
+            // si llegamos al último párrafo y ya cumplió su tiempo, limpiar texto
+            if (currentParagraphIndex == paragraphs.Count - 1 &&
+                lastKnownAudioTime >= GetDuration(currentParagraphIndex) - 0.001f)
+            {
+                ClearParagraph();
+            }
+
             // Entra a modo independiente desde el punto donde iba
             independentMode = true;
             paragraphElapsed = Mathf.Clamp(lastKnownAudioTime, 0f, GetDuration(currentParagraphIndex));
         }
+
 
         // 3) Si se vuelve a activar (audio comienza a reproducir)
         if (isPlaying && !lastIsPlaying && currentClip != null)
@@ -148,10 +156,8 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
-                // Llegó al final; puedes quedarte en el último o ciclar
-                // Para ciclar, descomenta:
-                // currentParagraphIndex = 0;
-                // ApplyParagraph(currentParagraphIndex, resetElapsed:true);
+                // Último párrafo completado: limpiar texto
+                ClearParagraph();
             }
         }
     }
@@ -187,6 +193,12 @@ public class Dialogue : MonoBehaviour
             paragraphDurations.Add(dur);
         }
     }
+
+    private void ClearParagraph()
+    {
+        if (paragraphText != null) paragraphText.text = "";
+    }
+
 
     private float GetDuration(int index)
     {

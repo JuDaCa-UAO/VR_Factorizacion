@@ -150,7 +150,7 @@ RectTransform:
   m_GameObject: {fileID: 11223303}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.7028, y: 5.7028, z: 5.7028}
+  m_LocalScale: {x: 3.1822193, y: 3.1822193, z: 3.1822193}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 977377979}
@@ -158,7 +158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 357}
+  m_AnchoredPosition: {x: -621, y: -422}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &11223305
@@ -288,20 +288,22 @@ MonoBehaviour:
   audioController: {fileID: 1292808671}
   audioSource: {fileID: 0}
   paragraphs:
-  - "\xA1Epa! \xBFQu\xE9 m\xE1s? \r\nSoy Facto, tu asistente virtual en este viaje
-    por el mundo de la factorizaci\xF3n.  Tranquilo, que aqu\xED nadie se complica.  
+  - "\xBFY entonces? \xBFQu\xE9 m\xE1s? \r\nSoy Facto, tu asistente virtual en este
+    viaje por el mundo de la factorizaci\xF3n.  Tranquilo, aqu\xED nadie se complica.  
     \r\nYo te voy a ir guiando paso a paso pa que pilles que factorizar no es tan
     complicado como parece.  La factorizaci\xF3n es como armar un rompecabezas: tomamos
     una expresi\xF3n grandota y la desarmamos hasta encontrar sus piezas m\xE1s simples. 
-    \r\n\xBFListo o qu\xE9? Vamos a darle suave, que esto es pa aprender disfrutando.\r"
-  - "Bueno, mira pues: en este juego vas a arrastrar los bloques hasta ponerlos en
-    la posici\xF3n correcta.\r\nCada bloque representa una parte de la ecuaci\xF3n:
-    los grandes son los cuadrados, los medianos son las X, y los chiquitos son los
-    n\xFAmeros.\r\nCuando los pongas en su lugar, vas a ver c\xF3mo la ecuaci\xF3n
-    toma forma y se arma completica.\r\n\xA1As\xED de sencillo, mano!\r"
-  - "Si te enredas, no te preocupes, que pa eso estoy yo.\r\nSolo respira, m\xEDralo
+    \r\n\xBFSi entendiste o qu\xE9? Vamos a darle suave, que esto es para aprender
+    disfrutando. Asi que relajate y vivi la situaci\xF3n\r"
+  - "Entonces empecemos pues: en este juego vas a arrastrar los bloques hasta ponerlos
+    en la posici\xF3n correcta.\r\nEntonces cada bloque representa una parte de la
+    ecuaci\xF3n: los grandes son los cuadrados, los medianos son las X, y los chiquitos
+    son los n\xFAmeros.\r\nCuando los pongas en su lugar, vas a ver c\xF3mo la ecuaci\xF3n
+    toma forma y se arma completica.\r\n\xA1As\xED de sencillo! \xBFSi me entendiste
+    o qu\xE9?\r"
+  - "Si te enredas, no te preocupes, que pa eso estoy yo.\r\nVos solo respira, m\xEDralo
     con calma y vuelve a intentarlo.\r\nA veces la clave est\xE1 en mirar el problema
-    desde otra esquina, \xBFs\xED me entiendes?\r"
+    desde otra esquina, \xBFs\xED me entendes?\r"
 --- !u!4 &53629579
 Transform:
   m_ObjectHideFlags: 0
@@ -775,7 +777,7 @@ RectTransform:
   m_GameObject: {fileID: 995165995}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.7028, y: 5.7028, z: 5.7028}
+  m_LocalScale: {x: 3.0823061, y: 3.0823061, z: 3.0823061}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 178737262}
@@ -783,7 +785,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 86}
+  m_AnchoredPosition: {x: 628, y: -422}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &995165997
@@ -1016,9 +1018,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playlist:
-  - {fileID: 8300000, guid: 41d1f3b093006ab4f8acb76f457bb9ff, type: 3}
-  - {fileID: 8300000, guid: 0f5e05ae6efbf554a918179ec525fa1a, type: 3}
-  - {fileID: 8300000, guid: 501a37712d4a4da4d88f7edf276e245c, type: 3}
+  - {fileID: 8300000, guid: 24215c2a6e7099c4f9e5d5826c403551, type: 3}
+  - {fileID: 8300000, guid: 56227faa89075884c82767c46df19d6e, type: 3}
+  - {fileID: 8300000, guid: e1005ce5adfdc62418c45450e82bc611, type: 3}
   playOnStart: 1
   toggleButtonText: {fileID: 178737260}
 --- !u!82 &1292808672
@@ -1166,7 +1168,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.7902, y: -333.22202}
+  m_AnchoredPosition: {x: 0.7902, y: 319}
   m_SizeDelta: {x: 637.6274, y: 126.0439}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1372930923
@@ -1216,8 +1218,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1252,7 +1254,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: -154.83}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
