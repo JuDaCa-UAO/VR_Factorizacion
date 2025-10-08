@@ -2308,6 +2308,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e1005ce5adfdc62418c45450e82bc611, type: 3}
   playOnStart: 1
   audio4: {fileID: 8300000, guid: 11bad24878d93ed4b9e5d4ac8f9fc95e, type: 3}
+  dialogueController: {fileID: 1938399302}
   toggleButtonText: {fileID: 62067400}
   block: {fileID: 285505573}
 --- !u!82 &937046194
@@ -3901,6 +3902,10 @@ MonoBehaviour:
   - "Si te enredas, no te preocupes, que pa eso estoy yo.\r\nVos solo respira, m\xEDralo
     con calma y vuelve a intentarlo.\r\nA veces la clave est\xE1 en mirar el problema
     desde otra esquina, \xBFs\xED me entendes?\r"
+  paragraphForAudio4: "\xA1Bueno! Ya pillaste c\xF3mo se juega.\r\nAhora s\xED, prep\xE1rate
+    pa resolver unos problemitas de verdad.\r\nYo estar\xE9 aqu\xED pendiente, ech\xE1ndote
+    una mano cuando lo necesit\xE9s.\r\n\xA1Pero vos tenes que ir con toda, que el
+    conocimiento no muerde! \r"
 --- !u!4 &1938399303
 Transform:
   m_ObjectHideFlags: 0
