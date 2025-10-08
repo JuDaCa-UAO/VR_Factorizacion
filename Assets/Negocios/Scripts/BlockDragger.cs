@@ -50,7 +50,7 @@ public class BlockDragger : MonoBehaviour
         }
     }
     // Verifica si todos los bloques están en su lugar
-    bool AllBlocksSnapped()
+    public bool AllBlocksSnapped()
     {
         var blocks = Object.FindObjectsByType<BlockSnapState>(FindObjectsSortMode.None);
         foreach (var block in blocks)
