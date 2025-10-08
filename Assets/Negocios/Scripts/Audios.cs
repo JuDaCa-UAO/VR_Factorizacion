@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro; // <- TextMeshPro
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(AudioSource))]
 public class Audios : MonoBehaviour
@@ -10,6 +11,9 @@ public class Audios : MonoBehaviour
 
     [Header("Iniciar automáticamente al cargar la escena")]
     public bool playOnStart = true;
+
+    [Header("Nuevo Audio y Texto (cuando todos los bloques estén en su lugar)")]
+    public AudioClip audio4;
 
     [Header("UI (opcional)")]
     public TextMeshProUGUI toggleButtonText; // Texto del botón Activar/Desactivar
@@ -24,11 +28,15 @@ public class Audios : MonoBehaviour
     private float _savedTime = 0f;            // para reanudar desde donde quedó
     private bool _wasPlayingLastFrame = false;
 
+    public BlockDragger block;
+
     private void Awake()
     {
         _as = GetComponent<AudioSource>();
         _as.playOnAwake = false;
         _as.loop = false;
+
+
     }
 
     private void Start()
@@ -96,7 +104,45 @@ public class Audios : MonoBehaviour
         _as.Play();
     }
 
- 
+    public void PlayNewAudio(int index)
+    {
+        if (index >= 0 && index < playlist.Count)
+        {
+            _as.clip = playlist[index];
+            _as.Play();
+        }
+        else
+        {
+            // Si el audio no está en la lista, aseguramos que exista un fallback (audio 4)
+            if (audio4 != null)
+            {
+                _as.clip = audio4;
+                _as.Play();
+            }
+        }
+    }
+
+    public void CheckAllBlocksSnapped()
+    {
+        if (AllBlocksSnapped()) // Si todos los bloques están bien colocados
+        {
+            // Reproducir el nuevo audio (audio 4) si existe
+            PlayNewAudio(4);  // Reproduce el audio 4 desde la playlist
+
+        }
+    }
+
+    // Método para verificar si todos los bloques están en la posición correcta
+    bool AllBlocksSnapped()
+    {
+        var blocks = Object.FindObjectsByType<BlockSnapState>(FindObjectsSortMode.None);
+        foreach (var block in blocks)
+        {
+            if (!block.isSnapped) return false;  // Si algún bloque no está en su lugar
+        }
+        return true;  // Si todos los bloques están bien, retornar true
+    }
+
     // Métodos para botones
 
     public void ToggleActivate()
@@ -128,9 +174,10 @@ public class Audios : MonoBehaviour
             SetToggleLabel(desactivar: true); // texto: "desactivar"
         }
     }
-
+    
     public void RestartCurrent()
     {
+      
         if (playlist.Count == 0) return;
 
         _savedTime = 0f;
