@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using TMPro; // 👈 Importante para usar TextMeshProUGUI
 
 public class GameManager : MonoBehaviour
 {
@@ -6,6 +7,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Puntaje actual (editable)")]
     public int score = 0;
+
+    [Header("Referencia al texto del puntaje")]
+    public TextMeshProUGUI scoreText; // 👈 Asigna el TMP de tu UI aquí
 
     const string SCORE_KEY = "score";
 
@@ -16,7 +20,6 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // Cargar el puntaje guardado solo si aún no lo has modificado en el Inspector
             int savedScore = PlayerPrefs.GetInt(SCORE_KEY, -1);
             if (savedScore >= 0) score = savedScore;
 
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
     {
         score++;
         SaveScore();
+        UpdateText(); // 👈 actualizar el texto cada vez que cambia el puntaje
     }
 
     public void SaveScore()
@@ -42,12 +46,21 @@ public class GameManager : MonoBehaviour
         Debug.Log("Score guardado: " + score);
     }
 
-    // 🔹 Puedes llamar esto desde el Inspector para reiniciar o cambiar manualmente
+    public void UpdateText()
+    {
+        if (scoreText != null)
+            scoreText.text = score.ToString();
+    }
+
     [ContextMenu("Resetear puntaje")]
     public void ResetScore()
     {
         score = 0;
         SaveScore();
-        Debug.Log("Score reseteado.");
+
+        if (scoreText != null)
+            scoreText.text = "0"; // 👈 cambia el texto del TMP a "0"
+
+        Debug.Log("Score reseteado y texto actualizado.");
     }
 }
