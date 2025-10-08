@@ -12,12 +12,24 @@ public class BlockDragger : MonoBehaviour
     [SerializeField] float followSpeed = 20f;
     [SerializeField] float magnetStrength = 10f; // fuerza del imán hacia el SnapPoint
 
+    [Header("Sonidos")]
+    [SerializeField] Audios audioController; // Referencia a Audios
+    [SerializeField] AudioClip correctSound;  // Sonido A: cuando el bloque es colocado correctamente
+    [SerializeField] AudioClip incorrectSound; // Sonido B: cuando el bloque no se coloca en el lugar correcto
+    [SerializeField] AudioClip allBlocksCorrectSound;
+    public AudioSource audioSource;
+    private bool hasPlayedCorrectSound = false;
+
+
     Rigidbody held;
     GameObject heldGO;
     Plane dragPlane;                 // plano a la altura del bloque
     SnapZoneSimple hoverZone = null; // slot hacia el que nos “imanta”
 
-    void Awake() { if (!cam) cam = Camera.main; }
+    void Awake() {
+        if (!cam) cam = Camera.main;
+        audioSource = GetComponent<AudioSource>(); // Obtener el AudioSource
+    }
 
     void Update()
     {
@@ -26,7 +38,30 @@ public class BlockDragger : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame) TryPick();
         if (Mouse.current.leftButton.isPressed && held) Drag();
         if (Mouse.current.leftButton.wasReleasedThisFrame) Drop();
+
+        if (AllBlocksSnapped() && !hasPlayedCorrectSound)
+        {
+            // Reproducir sonido C cuando todos los bloques estén correctos, solo una vez
+            audioSource.PlayOneShot(allBlocksCorrectSound);
+            hasPlayedCorrectSound = true;  // Marcar que el sonido se ha reproducido
+
+            // Llamar a la función en Audios para reproducir el nuevo audio y texto
+            audioController.CheckAllBlocksSnapped();
+        }
     }
+    // Verifica si todos los bloques están en su lugar
+    bool AllBlocksSnapped()
+    {
+        var blocks = Object.FindObjectsByType<BlockSnapState>(FindObjectsSortMode.None);
+        foreach (var block in blocks)
+        {
+            if (!block.isSnapped) return false;  // Si algún bloque no está bien posicionado
+        }
+        return true;  // Si todos los bloques están bien, retornar true
+    }
+
+    // Llamar a VRPlaylistAudioController y VRParagraphDisplayController cuando todos los bloques estén correctos
+
 
     void TryPick()
     {
@@ -90,12 +125,16 @@ public class BlockDragger : MonoBehaviour
         if (hoverZone && hoverZone.Matches(heldGO))
         {
             hoverZone.Snap(held); // fija kinematic + parent + marca estado
+                                  // Reproducir sonido  (correcto)
+            audioSource.PlayOneShot(correctSound);
         }
         else
         {
             held.isKinematic = false;
             held.useGravity = true;
             held.transform.SetParent(null, true);
+            // Reproducir sonido  (incorrecto)
+            audioSource.PlayOneShot(incorrectSound);
         }
 
         held = null;

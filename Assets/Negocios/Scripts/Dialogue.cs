@@ -136,6 +136,7 @@ public class Dialogue : MonoBehaviour
     }
 
 
+
     // Temporizador independiente
   
     private void RunIndependentTimer()
