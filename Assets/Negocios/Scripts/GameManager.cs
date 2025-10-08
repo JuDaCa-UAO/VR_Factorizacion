@@ -1,38 +1,53 @@
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static GameManager Instance;
 
-    public int Coins { get; private set; }
-    public event Action<int> OnCoinsChanged;
+    [Header("Puntaje actual (editable)")]
+    public int score = 0;
 
-    [SerializeField] bool loadAndSavePlayerPrefs = true;
-    const string CoinsKey = "GM_COINS";
+    const string SCORE_KEY = "score";
 
     void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
 
-        if (loadAndSavePlayerPrefs)
-            Coins = PlayerPrefs.GetInt(CoinsKey, 0);
+            // Cargar el puntaje guardado solo si aún no lo has modificado en el Inspector
+            int savedScore = PlayerPrefs.GetInt(SCORE_KEY, -1);
+            if (savedScore >= 0) score = savedScore;
+
+            Debug.Log("GameManager Awake. Score cargado = " + score);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
-    public void AddCoins(int amount)
+    public void AddPoint()
     {
-        if (amount <= 0) return;
-        Coins += amount;
-        OnCoinsChanged?.Invoke(Coins);
-        if (loadAndSavePlayerPrefs) PlayerPrefs.SetInt(CoinsKey, Coins);
+        score++;
+        SaveScore();
     }
 
-    public void ResetCoins()
+    public void SaveScore()
     {
-        Coins = 0;
-        OnCoinsChanged?.Invoke(Coins);
-        if (loadAndSavePlayerPrefs) PlayerPrefs.SetInt(CoinsKey, Coins);
+        PlayerPrefs.SetInt(SCORE_KEY, score);
+        PlayerPrefs.Save();
+        Debug.Log("Score guardado: " + score);
+    }
+
+    // 🔹 Puedes llamar esto desde el Inspector para reiniciar o cambiar manualmente
+    [ContextMenu("Resetear puntaje")]
+    public void ResetScore()
+    {
+        score = 0;
+        SaveScore();
+        Debug.Log("Score reseteado.");
     }
 }
