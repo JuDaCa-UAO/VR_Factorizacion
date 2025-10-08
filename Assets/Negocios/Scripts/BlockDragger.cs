@@ -26,6 +26,10 @@ public class BlockDragger : MonoBehaviour
     Plane dragPlane;                 // plano a la altura del bloque
     SnapZoneSimple hoverZone = null; // slot hacia el que nos “imanta”
 
+    [Header("Prefabs de efectos")]
+    [SerializeField] private GameObject effectIncorrectPrefab; // Prefab para cuando se coloca incorrectamente
+
+
     void Awake() {
         if (!cam) cam = Camera.main;
         audioSource = GetComponent<AudioSource>(); // Obtener el AudioSource
@@ -121,12 +125,18 @@ public class BlockDragger : MonoBehaviour
     {
         if (!held) return;
 
+
+        Vector3 spawnPosition = held.transform.position; // Posición donde instanciamos el efecto
+        Quaternion spawnRotation = Quaternion.identity; // Rotación por defecto
+
         // Si teníamos una zona “magnética” válida, pegamos sin exigir precisión
         if (hoverZone && hoverZone.Matches(heldGO))
         {
             hoverZone.Snap(held); // fija kinematic + parent + marca estado
                                   // Reproducir sonido  (correcto)
             audioSource.PlayOneShot(correctSound);
+
+           
         }
         else
         {
@@ -135,6 +145,12 @@ public class BlockDragger : MonoBehaviour
             held.transform.SetParent(null, true);
             // Reproducir sonido  (incorrecto)
             audioSource.PlayOneShot(incorrectSound);
+
+            // Instanciar prefab de efecto incorrecto
+            if (effectIncorrectPrefab != null)
+            {
+                Instantiate(effectIncorrectPrefab, spawnPosition, spawnRotation);
+            }
         }
 
         held = null;
