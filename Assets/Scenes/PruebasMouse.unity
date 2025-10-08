@@ -941,7 +941,6 @@ MonoBehaviour:
   incorrectSound: {fileID: 8300000, guid: fa19988bd43ea564986fefe7c4c99654, type: 3}
   allBlocksCorrectSound: {fileID: 8300000, guid: 427470d1f9c1c8c4f9d04a83cfd91954, type: 3}
   audioSource: {fileID: 285505574}
-  effectCorrectPrefab: {fileID: 4627633607752248759, guid: ace45474aa8394344b2d42878e7713e2, type: 3}
   effectIncorrectPrefab: {fileID: 6641362991922965762, guid: b1c5323b269d5a14caf43870b00e438d, type: 3}
 --- !u!82 &285505574
 AudioSource:
@@ -4425,7 +4424,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Reiniciar
+  m_text: Reiniciar Nivel
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
