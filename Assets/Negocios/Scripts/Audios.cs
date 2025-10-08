@@ -14,6 +14,7 @@ public class Audios : MonoBehaviour
 
     [Header("Nuevo Audio y Texto (cuando todos los bloques estén en su lugar)")]
     public AudioClip audio4;
+    public Dialogue dialogueController;
 
     [Header("UI (opcional)")]
     public TextMeshProUGUI toggleButtonText; // Texto del botón Activar/Desactivar
@@ -128,6 +129,8 @@ public class Audios : MonoBehaviour
         {
             // Reproducir el nuevo audio (audio 4) si existe
             PlayNewAudio(4);  // Reproduce el audio 4 desde la playlist
+
+            
 
         }
     }
