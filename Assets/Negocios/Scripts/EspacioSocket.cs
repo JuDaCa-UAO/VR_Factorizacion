@@ -70,12 +70,18 @@ public class EspacioSocket : MonoBehaviour
             : $"❌ {bloque.tipo} mal orientado o tipo incorrecto en {name}");
 
         ActualizarColor();
+
+        // 👇 Llama al gestor de validación global
+        FindObjectOfType<GestorValidacionGlobal>()?.Validar();
     }
 
     void OnBloqueRemovido(SelectExitEventArgs args)
     {
         bloqueCorrecto = false;
         ActualizarColor();
+
+        // 👇 Vuelve a validar si se retira el bloque
+        FindObjectOfType<GestorValidacionGlobal>()?.Validar();
     }
 
     void ActualizarColor()
