@@ -1603,7 +1603,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 419049759}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 2a1498c9bb7695a4d8c11c2c4879d0f0, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 5bfe08e652bb81f41ac3fdf7bfcce859, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -3173,7 +3173,7 @@ MonoBehaviour:
   toggleButtonText: {fileID: 62067401}
   videoScreen: {fileID: 727402915}
   videoPlayer: {fileID: 419049760}
-  hintButton: {fileID: 986642072}
+  hintButton: {fileID: 1864969139}
 --- !u!1 &963280281
 GameObject:
   m_ObjectHideFlags: 0
