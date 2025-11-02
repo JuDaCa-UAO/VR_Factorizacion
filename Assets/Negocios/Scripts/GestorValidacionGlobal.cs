@@ -6,6 +6,9 @@ public class GestorValidacionGlobal : MonoBehaviour
     [Header("Sockets a validar")]
     public EspacioSocket[] todosLosSockets;
 
+    [Header("Referencia al temporizador")]
+    public LevelTimer levelTimer;
+
     [Header("Referencia al sistema de puntuación")]
     public ScoreButton scoreButton; // 👈 arrastra aquí el objeto con el script ScoreButton
 
@@ -45,7 +48,10 @@ public class GestorValidacionGlobal : MonoBehaviour
                 {
                     Debug.LogWarning("⚠️ No se asignó el ScoreButton al Gestor de Validación.");
                 }
-
+                if (levelTimer != null)
+                {
+                    levelTimer.PauseTimer();
+                }
                 puntosYaSumados = true;
             }
 
