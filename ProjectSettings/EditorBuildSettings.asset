@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Inicio.unity
     guid: 4f876fdb291cbf84786e21cc092c2a57
   - enabled: 1
-    path: Assets/Scenes/PruebasMouse.unity
+    path: Assets/Scenes/nivel 1.unity
     guid: cec94a038f5e8b74b8ccf28d845c8349
   - enabled: 1
     path: Assets/Scenes/nivel2.unity
