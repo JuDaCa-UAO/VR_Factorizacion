@@ -785,6 +785,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce171d7b165bd6444a6020a900b51cb8, type: 3}
+--- !u!223 &117889465 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 2785240219374695738, guid: ce171d7b165bd6444a6020a900b51cb8, type: 3}
+  m_PrefabInstance: {fileID: 117889464}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &137397941
 GameObject:
   m_ObjectHideFlags: 0
@@ -2027,7 +2032,7 @@ MonoBehaviour:
   levelDurationMinutes: 5
   timerText: {fileID: 452281985}
   factoVoice: {fileID: 937046194}
-  canvaOnTimeUp: {fileID: 0}
+  canvaOnTimeUp: {fileID: 117889465}
   timeUpMessage: "\xA1Tiempo agotado! Reiniciando el nivel."
 --- !u!1 &483108300
 GameObject:
