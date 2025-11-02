@@ -14,7 +14,11 @@ public class LevelTimer : MonoBehaviour
     [Tooltip("Asigna aquí el TextMeshProUGUI para mostrar el tiempo")]
     public TextMeshProUGUI timerText;
 
-    [Header("Acción al Agotarse el Tiempo")]
+    [Header("Audio")]
+    [Tooltip("Audio de facto")]
+    public AudioSource factoVoice;
+
+    [Header("Canva")]
     [Tooltip("Canva que se muestrar cuando se acaba el tiempo")]
     public Canvas canvaOnTimeUp;
 
@@ -103,6 +107,12 @@ public class LevelTimer : MonoBehaviour
         {
             timerText.gameObject.SetActive(false);
             canvaOnTimeUp.gameObject.SetActive(true);
+            factoVoice.mute = true;
         }
+    }
+
+    public void ReloadScene() {
+        string scene = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(scene);
     }
 }
