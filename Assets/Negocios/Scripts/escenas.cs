@@ -5,7 +5,7 @@ public class Escenas : MonoBehaviour
 {
     [Header("Nombre de la escena a cargar")]
     [SerializeField] private string sceneToLoad; // puedes escribir el nombre en el Inspector
-
+    [SerializeField] private string end;
     /// <summary>
     /// Cargar la escena que está en sceneToLoad
     /// </summary>
@@ -14,6 +14,18 @@ public class Escenas : MonoBehaviour
         if (!string.IsNullOrEmpty(sceneToLoad))
         {
             SceneManager.LoadScene(sceneToLoad);
+        }
+        else
+        {
+            Debug.LogWarning("No se ha asignado un nombre de escena en el inspector.");
+        }
+    }
+
+    public void endd()
+    {
+        if (!string.IsNullOrEmpty(end))
+        {
+            SceneManager.LoadScene(end);
         }
         else
         {
