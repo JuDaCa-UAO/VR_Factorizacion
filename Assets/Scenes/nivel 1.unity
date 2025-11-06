@@ -3758,6 +3758,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: factoSpawn, Assembly-CSharp
+        m_MethodName: OnHintButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &789351612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4404,6 +4416,11 @@ MonoBehaviour:
   videoScreen: {fileID: 727402915}
   videoPlayer: {fileID: 419049760}
   hintButton: {fileID: 789351611}
+  hintFxPrefab: {fileID: 5718455614123706615, guid: 48528bdc1ecac774680b6e3cf6c6e206, type: 3}
+  hintFxSpawnPoint: {fileID: 4906629711076971085, guid: 48528bdc1ecac774680b6e3cf6c6e206, type: 3}
+  hintFxPositionOffset: {x: 745, y: -83, z: 611}
+  hintFxRotationEuler: {x: -1.056, y: 40.171, z: -0.046}
+  hintFxScale: {x: 10492.93, y: 10492.93, z: 10492.93}
 --- !u!1 &941773392 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5072540986535539642, guid: c327eb9d8c31bb54880d40aca19b32bc, type: 3}
@@ -5988,7 +6005,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1458798240
 MonoBehaviour:
   m_ObjectHideFlags: 0

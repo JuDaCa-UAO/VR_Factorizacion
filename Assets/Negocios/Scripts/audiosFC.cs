@@ -43,6 +43,17 @@ public class audiosFC : MonoBehaviour
     private int _currentHintIndex = 0;
     private bool _mainCompleted = false;
 
+    [Header("FX para pistas")]
+    public GameObject hintFxPrefab;          // Prefab que aparecerá al usar la pista
+    public Transform hintFxSpawnPoint;       // Punto base donde se instanciará
+    public Vector3 hintFxPositionOffset;     // Offset desde ese punto
+    public Vector3 hintFxRotationEuler = Vector3.zero; // Rotación del FX (en grados)
+    public Vector3 hintFxScale = Vector3.one;          // Escala del FX
+
+    // internos para controlar el FX actual
+    private GameObject _currentHintFxInstance;
+    private Coroutine _hintFxCoroutine;
+
     // Cierre
     private bool _closureStarted = false; // evita disparar la secuencia dos veces
 
@@ -182,7 +193,59 @@ public class audiosFC : MonoBehaviour
         }
 
         _currentHintIndex = (_currentHintIndex + 1) % hintPlaylist.Count;
+
+        SpawnHintFx();
     }
+
+    private void SpawnHintFx()
+    {
+        if (hintFxPrefab == null) return;
+
+        // Si ya había un FX de una pista anterior, lo destruimos
+        if (_currentHintFxInstance != null)
+        {
+            Destroy(_currentHintFxInstance);
+            _currentHintFxInstance = null;
+        }
+
+        // Posición
+        Vector3 basePos = hintFxSpawnPoint != null ? hintFxSpawnPoint.position : transform.position;
+        Vector3 finalPos = basePos + hintFxPositionOffset;
+
+        // Rotación
+        Quaternion finalRot = Quaternion.Euler(hintFxRotationEuler);
+
+        // Instanciar
+        _currentHintFxInstance = Instantiate(hintFxPrefab, finalPos, finalRot);
+        _currentHintFxInstance.transform.localScale = hintFxScale;
+
+        // Corrutina para destruir el FX cuando termine el audio actual
+        if (_hintFxCoroutine != null)
+            StopCoroutine(_hintFxCoroutine);
+        _hintFxCoroutine = StartCoroutine(DestroyHintFxWhenCurrentClipEnds());
+    }
+
+    private IEnumerator DestroyHintFxWhenCurrentClipEnds()
+    {
+        float waitTime = 1f;
+
+        if (_as != null && _as.clip != null && _as.clip.length > 0f)
+        {
+            waitTime = _as.clip.length;
+        }
+
+        // Esperar lo que dura el clip de pista actual
+        yield return new WaitForSeconds(waitTime);
+
+        if (_currentHintFxInstance != null)
+        {
+            Destroy(_currentHintFxInstance);
+            _currentHintFxInstance = null;
+        }
+
+        _hintFxCoroutine = null;
+    }
+
 
     // ===== Botón ACTIVAR/DESACTIVAR =====
     public void ToggleActivate()

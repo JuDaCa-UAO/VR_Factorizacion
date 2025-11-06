@@ -3769,6 +3769,11 @@ MonoBehaviour:
   videoScreen: {fileID: 727402915}
   videoPlayer: {fileID: 419049760}
   hintButton: {fileID: 1864969139}
+  hintFxPrefab: {fileID: 5718455614123706615, guid: 48528bdc1ecac774680b6e3cf6c6e206, type: 3}
+  hintFxSpawnPoint: {fileID: 4906629711076971085, guid: 48528bdc1ecac774680b6e3cf6c6e206, type: 3}
+  hintFxPositionOffset: {x: 745, y: -83, z: 611}
+  hintFxRotationEuler: {x: -1.056, y: 40.171, z: -0.046}
+  hintFxScale: {x: 10492.93, y: 10492.93, z: 10492.93}
 --- !u!1 &963280281
 GameObject:
   m_ObjectHideFlags: 0
