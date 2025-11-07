@@ -78,11 +78,9 @@ public class Retroalimentacion : MonoBehaviour
         var xrSocket = args.interactorObject as XRSocketInteractor;
         if (xrSocket == null) return;
 
-        // Qué socket fue
         var espacio = xrSocket.GetComponent<EspacioSocket>();
         if (espacio == null) return;
 
-        // Qué bloque fue
         Transform bloqueTransform = args.interactableObject.transform;
         var bloque = bloqueTransform.GetComponent<BloqueAlgebraico>();
 
@@ -94,9 +92,10 @@ public class Retroalimentacion : MonoBehaviour
         }
         else
         {
-            FeedbackIncorrecto(bloqueTransform.position);
+            FeedbackIncorrecto(bloqueTransform);   // 👈 pasamos el transform
         }
     }
+
 
     // Lógica de validación (duplicamos aquí, sin tocar EspacioSocket)
     private bool EsBloqueCorrecto(EspacioSocket espacio, BloqueAlgebraico bloque, Transform tBloque)
@@ -131,7 +130,7 @@ public class Retroalimentacion : MonoBehaviour
         
     }
 
-    private void FeedbackIncorrecto(Vector3 posicionBloque)
+    private void FeedbackIncorrecto(Transform bloqueTransform)
     {
         // Vibración más fuerte y larga
         Vibrar(intensidadIncorrecto, duracionIncorrecto);
@@ -142,13 +141,17 @@ public class Retroalimentacion : MonoBehaviour
             audioSource.PlayOneShot(sonidoIncorrecto);
         }
 
-        // FX en la posición del bloque
-        if (fxIncorrectoPrefab != null)
+        if (fxIncorrectoPrefab != null && bloqueTransform != null)
         {
-            Instantiate(fxIncorrectoPrefab, posicionBloque, Quaternion.identity);
-        }
+            // posición exactamente donde está el bloque
+            Vector3 pos = bloqueTransform.position;
 
-       
+            // si quieres un pelín más arriba:
+            // pos += Vector3.up * 0.05f;
+
+            Instantiate(fxIncorrectoPrefab, pos, bloqueTransform.rotation);
+            // o Quaternion.identity si no quieres la rotación del bloque
+        }
     }
 
     private void Vibrar(float intensidad, float duracion)
