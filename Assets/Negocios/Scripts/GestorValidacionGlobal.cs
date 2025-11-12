@@ -10,15 +10,21 @@ public class GestorValidacionGlobal : MonoBehaviour
     public LevelTimer levelTimer;
 
     [Header("Referencia al sistema de puntuación")]
-    public ScoreButton scoreButton; // 👈 arrastra aquí el objeto con el script ScoreButton
+    public ScoreButton scoreButton;
 
-    private bool puntosYaSumados = false; // 👈 evita que sume varias veces
+    [Header("Estado general")]
+    [Tooltip("Se pone en TRUE cuando TODOS los bloques correctos están encajados.")]
+    public bool bloquesCompletos = false;
 
+    private bool puntosYaSumados = false;
+
+    // Llama a este método cuando cambie el estado de algún socket/bloque
     public void Validar()
     {
         if (todosLosSockets == null || todosLosSockets.Length == 0)
         {
-            Debug.LogWarning("⚠️ No hay sockets asignados.");
+            Debug.LogWarning("⚠️ [Gestor] No hay sockets asignados.");
+            bloquesCompletos = false;
             return;
         }
 
@@ -26,7 +32,7 @@ public class GestorValidacionGlobal : MonoBehaviour
 
         foreach (var socket in todosLosSockets)
         {
-            XRSocketInteractor interactor = socket.GetComponent<XRSocketInteractor>();
+            var interactor = socket.GetComponent<XRSocketInteractor>();
             if (interactor == null || !interactor.hasSelection || !socket.bloqueCorrecto)
             {
                 todoCorrecto = false;
@@ -34,37 +40,26 @@ public class GestorValidacionGlobal : MonoBehaviour
             }
         }
 
+        bloquesCompletos = todoCorrecto;
+
         if (todoCorrecto)
         {
             if (!puntosYaSumados)
             {
-                // ✅ Agrega un punto usando el sistema de ScoreButton
-                if (scoreButton != null)
-                {
-                    scoreButton.AddPoint();
-                    Debug.Log("🏆 Todos los bloques están correctos. ¡Punto agregado!");
-                }
-                else
-                {
-                    Debug.LogWarning("⚠️ No se asignó el ScoreButton al Gestor de Validación.");
-                }
-                if (levelTimer != null)
-                {
-                    levelTimer.PauseTimer();
-                }
+                if (scoreButton != null) scoreButton.AddPoint();
+                if (levelTimer != null) levelTimer.PauseTimer();
                 puntosYaSumados = true;
             }
-
-            Debug.Log("🎉 Todos los bloques están bien ubicados ✅");
+            // Debug opcional:
+            // Debug.Log("🎉 [Gestor] Todos los bloques correctos.");
         }
         else
         {
-            // Si algo cambia (alguien quita un bloque), permite sumar nuevamente la próxima vez
             if (puntosYaSumados)
             {
-                Debug.Log("🔁 Un bloque fue removido o está mal colocado. Esperando nueva validación completa.");
+                // Debug opcional:
+                // Debug.Log("🔁 [Gestor] Algún bloque se removió o está incorrecto.");
             }
-
             puntosYaSumados = false;
         }
     }

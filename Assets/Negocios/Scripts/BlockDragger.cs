@@ -50,7 +50,6 @@ public class BlockDragger : MonoBehaviour
             hasPlayedCorrectSound = true;  // Marcar que el sonido se ha reproducido
 
             // Llamar a la función en Audios para reproducir el nuevo audio y texto
-            audioController.CheckAllBlocksSnapped();
         }
     }
     // Verifica si todos los bloques están en su lugar

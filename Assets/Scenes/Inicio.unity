@@ -2028,7 +2028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7503f651f2681941ab967225acc0ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: PruebasMouse
+  sceneToLoad: bloques
 --- !u!1 &1317237585 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7202276306740998517, guid: b2eaa052fd196cd45ba9b829b1c1f97f, type: 3}

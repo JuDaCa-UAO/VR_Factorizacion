@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.Video;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
 public class Audios : MonoBehaviour
@@ -13,10 +11,6 @@ public class Audios : MonoBehaviour
     [Header("Iniciar automáticamente al cargar la escena")]
     public bool playOnStart = true;
 
-    [Header("Nuevo Audio (cuando todos los bloques estén en su lugar)")]
-    public AudioClip audio4; // Audio especial final
-    public Dialogue dialogueController;
-
     [Header("UI (opcional)")]
     public TextMeshProUGUI toggleButtonText;
 
@@ -25,15 +19,8 @@ public class Audios : MonoBehaviour
 
     private bool _globallyEnabled = true;
     private bool _userPausedGlobally = false;
-
     private float _savedTime = 0f;
     private bool _wasPlayingLastFrame = false;
-
-    [Header("Animación (RawImage + VideoPlayer)")]
-    [SerializeField] private RawImage animationRawImage;   // ← Asigna aquí el RawImage
-    [SerializeField] private VideoPlayer videoPlayer;       // ← Asigna aquí el VideoPlayer
-
-    private bool playingFinalAudio = false; // para controlar el audio 4
 
     private void Awake()
     {
@@ -53,16 +40,6 @@ public class Audios : MonoBehaviour
 
         if (playOnStart)
             TryPlay();
-
-        // 🔹 Aseguramos que ambos estén desactivados al inicio
-        if (animationRawImage != null)
-            animationRawImage.gameObject.SetActive(false);
-
-        if (videoPlayer != null)
-        {
-            videoPlayer.gameObject.SetActive(false);
-            videoPlayer.loopPointReached += OnVideoEnd;
-        }
     }
 
     private void Update()
@@ -71,21 +48,14 @@ public class Audios : MonoBehaviour
         {
             if (_wasPlayingLastFrame && !_as.isPlaying)
             {
-                if (playingFinalAudio)
-                {
-                    playingFinalAudio = false;
-                    Invoke(nameof(ShowAnimationCanvas), 3f);
-                }
-                else
-                {
-                    GoToNextClip();
-                }
+                GoToNextClip();
             }
         }
 
         _wasPlayingLastFrame = _as.isPlaying;
     }
 
+    // 🎧 Reproducir desde donde quedó o desde el inicio
     private void TryPlay()
     {
         if (!_globallyEnabled || _as.clip == null) return;
@@ -103,6 +73,7 @@ public class Audios : MonoBehaviour
         _as.Play();
     }
 
+    // 🎧 Pasa al siguiente clip de la lista
     private void GoToNextClip()
     {
         if (!_globallyEnabled || _userPausedGlobally) return;
@@ -119,77 +90,7 @@ public class Audios : MonoBehaviour
         _as.Play();
     }
 
-    // 🔹 Llamado cuando todos los bloques están bien colocados
-    public void CheckAllBlocksSnapped()
-    {
-        if (AllBlocksSnapped())
-        {
-            Debug.Log("✅ Todos los bloques en su lugar.");
-
-            _as.Stop();
-            playlist.Clear();
-
-            if (audio4 != null)
-            {
-                _as.clip = audio4;
-                _as.time = 0f;
-                _as.Play();
-                playingFinalAudio = true;
-                Debug.Log("🎧 Reproduciendo audio final (audio4)...");
-            }
-            else
-            {
-                Debug.LogWarning("No se asignó Audio4 en el inspector.");
-                Invoke(nameof(ShowAnimationCanvas), 3f);
-            }
-        }
-    }
-
-    private void ShowAnimationCanvas()
-    {
-        if (animationRawImage != null)
-        {
-            animationRawImage.gameObject.SetActive(true);
-            Debug.Log("🎬 RawImage activado, reproduciendo video...");
-        }
-
-        if (videoPlayer != null)
-        {
-            videoPlayer.gameObject.SetActive(true);
-            videoPlayer.Play();
-            Debug.Log("🎥 VideoPlayer activado y reproduciendo animación...");
-        }
-    }
-
-    // 🔹 Se llama automáticamente al terminar el video
-    private void OnVideoEnd(VideoPlayer vp)
-    {
-        Debug.Log("🎞️ Video finalizado, desactivando RawImage y VideoPlayer.");
-
-        if (animationRawImage != null)
-            animationRawImage.gameObject.SetActive(false);
-
-        if (videoPlayer != null)
-        {
-            videoPlayer.Stop();
-            videoPlayer.gameObject.SetActive(false);
-        }
-    }
-
-    bool AllBlocksSnapped()
-    {
-        var blocks = Object.FindObjectsByType<BlockSnapState>(FindObjectsSortMode.None);
-        foreach (var block in blocks)
-        {
-            if (!block.isSnapped) return false;
-        }
-        return true;
-    }
-
-    // -----------------------
-    // Métodos auxiliares
-    // -----------------------
-
+    // 🔘 Botón para pausar o reanudar
     public void ToggleActivate()
     {
         if (_as.clip == null) return;
@@ -198,10 +99,8 @@ public class Audios : MonoBehaviour
         {
             _savedTime = _as.isPlaying ? _as.time : _savedTime;
             _as.Stop();
-
             _userPausedGlobally = true;
             _globallyEnabled = false;
-
             SetToggleLabel(desactivar: false);
         }
         else
@@ -213,6 +112,7 @@ public class Audios : MonoBehaviour
         }
     }
 
+    // 🔁 Reinicia el clip actual
     public void RestartCurrent()
     {
         if (_as.clip == null) return;
@@ -228,6 +128,7 @@ public class Audios : MonoBehaviour
         }
     }
 
+    // ▶️ Reproduce un clip específico
     public void PlayIndex(int index)
     {
         if (playlist.Count == 0) return;
@@ -247,6 +148,7 @@ public class Audios : MonoBehaviour
         }
     }
 
+    // Cambia el texto del botón (si lo hay)
     private void SetToggleLabel(bool desactivar)
     {
         if (toggleButtonText == null) return;

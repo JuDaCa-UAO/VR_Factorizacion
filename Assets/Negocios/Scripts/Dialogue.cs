@@ -18,10 +18,6 @@ public class Dialogue : MonoBehaviour
     // Duraciones calculadas desde los AudioClips
     private List<float> paragraphDurations = new List<float>();
 
-    [Header("Nuevo Párrafo para Audio 4")]
-    [TextArea(2, 6)]
-    public string paragraphForAudio4 = "¡Bueno! Ya pillaste cómo se juega.\r\nAhora sí, prepárate pa resolver unos problemitas de verdad.\r\nYo estaré aquí pendiente, echándote una mano cuando lo necesités.\r\n¡Pero vos tenes que ir con toda, que el conocimiento no muerde!";
-
     // Estado interno
     private int currentParagraphIndex = 0;
     private float paragraphElapsed = 0f;
@@ -92,12 +88,6 @@ public class Dialogue : MonoBehaviour
         }
 
         // Si el audio 4 está reproduciéndose, mostramos el párrafo específico de audio 4
-        if (currentClip == audioController.audio4 && !independentMode)
-        {
-            currentParagraphIndex = 0; // Solo hay un párrafo para el audio 4, así que index es 0
-            ApplyParagraphForAudio4();  // Mostrar el texto específico de audio 4
-            paragraphElapsed = 0f;
-        }
 
         // 2) Detectar desactivación/pausa global (stop manual sin cambio de clip)
         // Transición: estaba reproduciendo y ahora no, y el clip NO cambió -> probable desactivación
@@ -148,12 +138,7 @@ public class Dialogue : MonoBehaviour
         lastIsPlaying = isPlaying;
     }
 
-    private void ApplyParagraphForAudio4()
-    {
-        // Cambiar el texto a lo que corresponde con el párrafo para audio 4
-        paragraphText.text = paragraphForAudio4;
-    }
-
+   
     // Temporizador independiente
 
     private void RunIndependentTimer()
