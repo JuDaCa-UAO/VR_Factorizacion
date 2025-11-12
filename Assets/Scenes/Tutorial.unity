@@ -466,12 +466,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 199493003374914127, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199493003374914127, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -39
+      value: 438
       objectReference: {fileID: 0}
     - target: {fileID: 199493003374914127, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 337
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2033259459782584041, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_Enabled
@@ -480,7 +484,7 @@ PrefabInstance:
     - target: {fileID: 3398432722476837346, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 937046193}
+      objectReference: {fileID: 0}
     - target: {fileID: 3398432722476837346, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ToggleActivate
@@ -499,7 +503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4598177853863785710, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_Name
-      value: Canvas
+      value: CanvasFinal
       objectReference: {fileID: 0}
     - target: {fileID: 4598177853863785710, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_IsActive
@@ -592,6 +596,14 @@ PrefabInstance:
     - target: {fileID: 6732146726749830711, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 6732146726749830711, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 6732146726749830711, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7086351416893688894, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_Pivot.x
@@ -692,7 +704,7 @@ PrefabInstance:
     - target: {fileID: 7827338497237583290, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 937046193}
+      objectReference: {fileID: 0}
     - target: {fileID: 7827338497237583290, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RestartCurrent
@@ -718,17 +730,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1910236099}
   m_SourcePrefab: {fileID: 100100000, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
---- !u!114 &62067400 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 796578068501615906, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
-  m_PrefabInstance: {fileID: 62067399}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &62067401 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6732146726749830711, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
@@ -1526,7 +1527,7 @@ MonoBehaviour:
     m_Bits: 8
   followSpeed: 20
   magnetStrength: 10
-  audioController: {fileID: 937046193}
+  audioController: {fileID: 0}
   correctSound: {fileID: 8300000, guid: 99531733c7444f946bf3453638b198f9, type: 3}
   incorrectSound: {fileID: 8300000, guid: fa19988bd43ea564986fefe7c4c99654, type: 3}
   allBlocksCorrectSound: {fileID: 8300000, guid: 427470d1f9c1c8c4f9d04a83cfd91954, type: 3}
@@ -2104,7 +2105,6 @@ GameObject:
   - component: {fileID: 474422941}
   - component: {fileID: 474422940}
   - component: {fileID: 474422942}
-  - component: {fileID: 474422943}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2139,6 +2139,7 @@ MonoBehaviour:
   - {fileID: 1880052054}
   levelTimer: {fileID: 0}
   scoreButton: {fileID: 451814145}
+  bloquesCompletos: 0
 --- !u!4 &474422941
 Transform:
   m_ObjectHideFlags: 0
@@ -2168,23 +2169,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: 0
   scoreText: {fileID: 451814144}
---- !u!114 &474422943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 474422939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8397231ee221cf240aa8239c30be42bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  videoPlayer: {fileID: 419049760}
-  finalCanvas: {fileID: 2071449246}
-  nextSceneName: factorComun
-  endSceneName: Inicio
-  delayAfterVideo: 5
 --- !u!1 &483108300
 GameObject:
   m_ObjectHideFlags: 0
@@ -3755,7 +3739,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727402913}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3763,7 +3747,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000061035, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &727402915
@@ -4216,8 +4200,9 @@ GameObject:
   m_Component:
   - component: {fileID: 937046195}
   - component: {fileID: 937046194}
-  - component: {fileID: 937046193}
+  - component: {fileID: 937046198}
   - component: {fileID: 937046196}
+  - component: {fileID: 937046197}
   m_Layer: 0
   m_Name: audioManager
   m_TagString: Untagged
@@ -4225,28 +4210,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &937046193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 937046192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c39ebbdd9e6a9d4eae714928dc3e5b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playlist:
-  - {fileID: 8300000, guid: 24215c2a6e7099c4f9e5d5826c403551, type: 3}
-  - {fileID: 8300000, guid: 56227faa89075884c82767c46df19d6e, type: 3}
-  - {fileID: 8300000, guid: e1005ce5adfdc62418c45450e82bc611, type: 3}
-  playOnStart: 1
-  audio4: {fileID: 8300000, guid: 11bad24878d93ed4b9e5d4ac8f9fc95e, type: 3}
-  dialogueController: {fileID: 1938399302}
-  toggleButtonText: {fileID: 62067400}
-  animationRawImage: {fileID: 727402915}
-  videoPlayer: {fileID: 419049760}
 --- !u!82 &937046194
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4365,27 +4328,55 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 937046192}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4dc340e3c9c66e4fbdaeb146aa91d69, type: 3}
+  m_Script: {fileID: 11500000, guid: 05078e61e71626443b3a42d331aa0c1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objetoConGestor: {fileID: 474422939}
+  audioScript: {fileID: 937046198}
+  audioFinalScript: {fileID: 937046197}
+  framesConfirmacion: 2
+--- !u!114 &937046197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937046192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656fcfd5afcc2d64cae763a05b698bd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioFinal: {fileID: 8300000, guid: 11bad24878d93ed4b9e5d4ac8f9fc95e, type: 3}
+  mensajeFinal: "\xA1Bueno! Ya pillaste c\xF3mo se juega.\nAhora s\xED, prep\xE1rate
+    pa resolver unos problemitas de verdad.\nYo estar\xE9 aqu\xED pendiente, ech\xE1ndote
+    una mano cuando lo necesit\xE9s.\n\xA1Pero vos tenes que ir con toda, que el
+    conocimiento no muerde!"
+  textoUI: {fileID: 62067401}
+  rewardRawImage: {fileID: 727402915}
+  videoPlayer: {fileID: 419049760}
+  nombreEscenaSiguiente: nivel 1
+  delayDespuesDeVideo: 3
+--- !u!114 &937046198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937046192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c39ebbdd9e6a9d4eae714928dc3e5b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playlist:
-  - {fileID: 8300000, guid: e73563d71c5fe6e4fbd7fda68464d6a0, type: 3}
+  - {fileID: 8300000, guid: 24215c2a6e7099c4f9e5d5826c403551, type: 3}
+  - {fileID: 8300000, guid: 56227faa89075884c82767c46df19d6e, type: 3}
+  - {fileID: 8300000, guid: 11bad24878d93ed4b9e5d4ac8f9fc95e, type: 3}
   playOnStart: 1
-  hintPlaylist:
-  - {fileID: 8300000, guid: ce557f5e66936f241b819ddd7baf1187, type: 3}
-  - {fileID: 8300000, guid: a4b947c92a525bc4fbe513abdc0a933d, type: 3}
-  audio4: {fileID: 8300000, guid: 63775de9fd8eb66428d3149faadc46a3, type: 3}
-  toggleButtonText: {fileID: 62067400}
-  videoScreen: {fileID: 727402915}
-  videoPlayer: {fileID: 419049760}
-  hintButton: {fileID: 0}
-  hintFxPrefab: {fileID: 0}
-  hintFxSpawnPoint: {fileID: 0}
-  hintFxPositionOffset: {x: 0, y: 0, z: 0}
-  hintFxRotationEuler: {x: 0, y: 0, z: 0}
-  hintFxScale: {x: 1, y: 1, z: 1}
+  toggleButtonText: {fileID: 62067401}
 --- !u!1 &941773392 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5072540986535539642, guid: c327eb9d8c31bb54880d40aca19b32bc, type: 3}
@@ -7526,7 +7517,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1938399303}
   - component: {fileID: 1938399302}
-  - component: {fileID: 1938399304}
   m_Layer: 0
   m_Name: dialogueManager
   m_TagString: Untagged
@@ -7547,8 +7537,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paragraphText: {fileID: 62067401}
-  audioController: {fileID: 937046193}
-  audioSource: {fileID: 0}
+  audioController: {fileID: 937046198}
+  audioSource: {fileID: 937046194}
   paragraphs:
   - "\xBFY entonces? \xBFQu\xE9 m\xE1s? \r\nSoy Facto, tu asistente virtual en este
     viaje por el mundo de la factorizaci\xF3n.  Tranquilo, aqu\xED nadie se complica.  
@@ -7566,10 +7556,6 @@ MonoBehaviour:
   - "Si te enredas, no te preocupes, que pa eso estoy yo.\r\nVos solo respira, m\xEDralo
     con calma y vuelve a intentarlo.\r\nA veces la clave est\xE1 en mirar el problema
     desde otra esquina, \xBFs\xED me entendes?\r"
-  paragraphForAudio4: "\xA1Bueno! Ya pillaste c\xF3mo se juega.\r\nAhora s\xED, prep\xE1rate
-    pa resolver unos problemitas de verdad.\r\nYo estar\xE9 aqu\xED pendiente, ech\xE1ndote
-    una mano cuando lo necesit\xE9s.\r\n\xA1Pero vos tenes que ir con toda, que el
-    conocimiento no muerde! \r"
 --- !u!4 &1938399303
 Transform:
   m_ObjectHideFlags: 0
@@ -7585,32 +7571,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1938399304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1938399301}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3a808a838f07f6468ea1f49b39428c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  paragraphText: {fileID: 62067401}
-  audioController: {fileID: 937046196}
-  audioSource: {fileID: 0}
-  paragraphs:
-  - "\xA1Ve, mi llave! Hoy vamos a sacar factor com\xFAn. Eso es como pillar lo que
-    se repite en todos los t\xE9rminos y sacarlo fuera de la expresi\xF3n. Lo que
-    queda adentro es cada t\xE9rmino dividido por ese factor. \xA1Pilas pues, que
-    esto suena serio pero est\xE1 sabrosito!\r\nArrancamos suave pa\u2019 calentar,
-    mira la imagen: 2x + 4. \xBFQu\xE9 cosita se repite ah\xED, ve?\r"
-  hintParagraphs:
-  - " Pens\xE1 en un numerito que le quepa a 2x y a 4 sin pelear\u2026"
-  - "Sac\xE1 ese numerito por fuera y dej\xE1 lo dem\xE1s entre par\xE9ntesis.\r"
-  closureParagraph: "\xA1Eso es! Factor com\xFAn afuera, expresi\xF3n ordenadita
-    adentro. \xA1Seguimos!"
 --- !u!1 &2071449246
 GameObject:
   m_ObjectHideFlags: 0
@@ -7623,6 +7583,7 @@ GameObject:
   - component: {fileID: 2071449249}
   - component: {fileID: 2071449248}
   - component: {fileID: 2071449247}
+  - component: {fileID: 2071449251}
   m_Layer: 5
   m_Name: CanvasFinal
   m_TagString: Untagged
@@ -7702,8 +7663,8 @@ RectTransform:
   m_GameObject: {fileID: 2071449246}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.45}
-  m_LocalScale: {x: 0.00038026925, y: 0.00038026934, z: 0.00038026925}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.00039, y: 0.00039, z: 0.00039}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 533908040}
   - {fileID: 1560891602}
@@ -7713,9 +7674,28 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.38, y: 0.8666544}
+  m_AnchoredPosition: {x: -0.377, y: 0.8666544}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2071449251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071449246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &2103670751
 GameObject:
   m_ObjectHideFlags: 0
