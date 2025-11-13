@@ -1,45 +1,115 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 public class Facto : MonoBehaviour
 {
     [Header("Prefabs")]
-    public GameObject prefab1; // Prefab 1 que se instanciar· al inicio
-    public GameObject prefab2; // Prefab 2 que se instanciar· despuÈs
+    public GameObject prefabInicial;          // Se muestra al inicio
+    public GameObject prefabFinal;            // Reemplaza cuando bloquesCompletos = true
 
-    private GameObject instantiatedPrefab1; // Variable para guardar la instancia de prefab 1
-    private GameObject instantiatedPrefab2; // Variable para guardar la instancia de prefab 2
+    [Header("Transform (EDITA EN VIVO)")]
+    public Vector3 worldPosition = Vector3.zero;
+    public Vector3 worldRotationEuler = Vector3.zero;
+    public Vector3 worldScale = Vector3.one;
 
-    public BlockDragger blockDragger; // Referencia a BlockDragger para verificar el estado de los bloques
+    [Header("Live Edit")]
+    [Tooltip("Si est√° activo, durante el Play la instancia seguir√° estos valores cada frame.")]
+    public bool liveEditInPlay = true;
 
-    // Valores de posiciÛn, rotaciÛn y escala proporcionados
-    private Vector3 spawnPosition = new Vector3(-41.8f, -1.8f, -6.9f);
-    private Quaternion spawnRotation = Quaternion.Euler(28.814f, -89.14f, -88.23f);
-    private Vector3 spawnScale = new Vector3(585.06f, 585.06f, 585.06f);
+    [Header("Validaci√≥n (GameManager)")]
+    [Tooltip("GameObject que tiene GestorValidacionGlobal.")]
+    public GameObject gameManager;
 
-    void Start()
+    [Header("Opciones")]
+    public bool instanciarEnAwake = true;     // Instancia apenas carga
+    public Color gizmoColor = new Color(0.2f, 0.8f, 1f, 0.6f);
+    public float gizmoSize = 0.2f;
+
+    // ---- Internos ----
+    private GestorValidacionGlobal _validador;
+    private GameObject _instanciaActual;
+    private bool _reemplazado = false;
+
+    private void Awake()
     {
-        // Instanciamos prefab 1 al inicio con los valores de posiciÛn, rotaciÛn y escala
-        instantiatedPrefab1 = Instantiate(prefab1, spawnPosition, spawnRotation);
-        instantiatedPrefab1.transform.localScale = spawnScale;  // Aplicamos la escala
+        if (gameManager != null)
+            _validador = gameManager.GetComponent<GestorValidacionGlobal>();
+
+        if (_validador == null)
+            Debug.LogWarning("‚ö†Ô∏è [Facto] No se encontr√≥ GestorValidacionGlobal en el GameObject asignado.");
+
+        if (instanciarEnAwake)
+            InstanciarInicial();
     }
 
-    void Update()
+    private void Start()
     {
-        // Verificamos si todos los bloques est·n correctamente posicionados
-        if (blockDragger.AllBlocksSnapped() && instantiatedPrefab2 == null)
+        if (!instanciarEnAwake)
+            InstanciarInicial();
+    }
+
+    private void Update()
+    {
+        // Edita en vivo durante el Play
+        if (Application.isPlaying && liveEditInPlay && _instanciaActual != null)
+            AplicarTransformEnInstancia(_instanciaActual);
+
+        // Swap cuando el gestor diga que todo est√° correcto
+        if (!_reemplazado && _validador != null && _validador.bloquesCompletos)
+            ReemplazarPorFinal();
+    }
+
+    private void InstanciarInicial()
+    {
+        if (_instanciaActual != null || prefabInicial == null) return;
+
+        _instanciaActual = Instantiate(prefabInicial, worldPosition, Quaternion.Euler(worldRotationEuler));
+        _instanciaActual.transform.localScale = worldScale;
+        // Debug.Log("[Facto] Prefab inicial instanciado.");
+    }
+
+    private void ReemplazarPorFinal()
+    {
+        _reemplazado = true;
+
+        if (prefabFinal == null)
         {
-            // Si todos los bloques est·n en su lugar y a˙n no se ha instanciado el prefab 2
-            SpawnPrefab2();
+            Debug.LogWarning("‚ö†Ô∏è [Facto] PrefabFinal no asignado. No se realiza el reemplazo.");
+            return;
         }
+
+        if (_instanciaActual != null)
+        {
+            Destroy(_instanciaActual);
+            _instanciaActual = null;
+        }
+
+        _instanciaActual = Instantiate(prefabFinal, worldPosition, Quaternion.Euler(worldRotationEuler));
+        _instanciaActual.transform.localScale = worldScale;
+        // Debug.Log("[Facto] Prefab final instanciado.");
     }
 
-    void SpawnPrefab2()
+    private void AplicarTransformEnInstancia(GameObject go)
     {
-        // Instanciamos prefab 2 en la misma posiciÛn, rotaciÛn y escala que el prefab 1
-        instantiatedPrefab2 = Instantiate(prefab2, instantiatedPrefab1.transform.position, instantiatedPrefab1.transform.rotation);
-        instantiatedPrefab2.transform.localScale = instantiatedPrefab1.transform.localScale;
+        go.transform.SetPositionAndRotation(worldPosition, Quaternion.Euler(worldRotationEuler));
+        go.transform.localScale = worldScale;
+    }
 
-        // Destruimos el prefab 1
-        Destroy(instantiatedPrefab1);
+    // Bot√≥n √∫til para re-aplicar transform manualmente (desde el inspector con scripts que soporten buttons)
+    public void ReaplicarTransform()
+    {
+        if (_instanciaActual != null)
+            AplicarTransformEnInstancia(_instanciaActual);
+    }
+
+    // Gizmos para visualizar el punto/rotaci√≥n en editor
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = gizmoColor;
+        Gizmos.DrawSphere(worldPosition, gizmoSize);
+
+        var rot = Quaternion.Euler(worldRotationEuler);
+        Gizmos.color = Color.red; Gizmos.DrawLine(worldPosition, worldPosition + rot * Vector3.right * gizmoSize * 3f);
+        Gizmos.color = Color.green; Gizmos.DrawLine(worldPosition, worldPosition + rot * Vector3.up * gizmoSize * 3f);
+        Gizmos.color = Color.blue; Gizmos.DrawLine(worldPosition, worldPosition + rot * Vector3.forward * gizmoSize * 3f);
     }
 }

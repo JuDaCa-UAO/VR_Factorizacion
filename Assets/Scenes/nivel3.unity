@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: f15c336556dd74f40aaca655f7767970, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -658,12 +658,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 199493003374914127, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199493003374914127, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -39
+      value: 416
       objectReference: {fileID: 0}
     - target: {fileID: 199493003374914127, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 337
+      value: -23
       objectReference: {fileID: 0}
     - target: {fileID: 2033259459782584041, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_Enabled
@@ -743,7 +747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6732146726749830711, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_fontSize
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6732146726749830711, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_margin.w
@@ -771,11 +775,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6732146726749830711, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_fontSizeBase
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6732146726749830711, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 6732146726749830711, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 6732146726749830711, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7086351416893688894, guid: 7c1b78bc555964b45bf845d305786120, type: 3}
       propertyPath: m_Pivot.x
@@ -2587,6 +2599,7 @@ MonoBehaviour:
   - {fileID: 1880052054}
   levelTimer: {fileID: 474422942}
   scoreButton: {fileID: 0}
+  bloquesCompletos: 0
 --- !u!4 &474422941
 Transform:
   m_ObjectHideFlags: 0
