@@ -1910,6 +1910,7 @@ MonoBehaviour:
   - {fileID: 1880052054}
   levelTimer: {fileID: 474422942}
   scoreButton: {fileID: 0}
+  bloquesCompletos: 0
 --- !u!4 &474422941
 Transform:
   m_ObjectHideFlags: 0
@@ -5325,9 +5326,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 719364494174930355, guid: bfe1298330f99084a930c3a669777fe8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 719364494174930355, guid: bfe1298330f99084a930c3a669777fe8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 416
+      objectReference: {fileID: 0}
+    - target: {fileID: 719364494174930355, guid: bfe1298330f99084a930c3a669777fe8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -30
+      objectReference: {fileID: 0}
     - target: {fileID: 3814282265892707090, guid: bfe1298330f99084a930c3a669777fe8, type: 3}
       propertyPath: m_Name
       value: CanvasTextGam Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220152928062034379, guid: bfe1298330f99084a930c3a669777fe8, type: 3}
+      propertyPath: m_fontSize
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220152928062034379, guid: bfe1298330f99084a930c3a669777fe8, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220152928062034379, guid: bfe1298330f99084a930c3a669777fe8, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220152928062034379, guid: bfe1298330f99084a930c3a669777fe8, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7595541738493436866, guid: bfe1298330f99084a930c3a669777fe8, type: 3}
       propertyPath: m_Pivot.x
