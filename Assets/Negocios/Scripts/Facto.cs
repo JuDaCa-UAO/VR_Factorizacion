@@ -3,38 +3,39 @@
 public class Facto : MonoBehaviour
 {
     [Header("Prefabs")]
-    public GameObject prefabInicial;          // Se muestra al inicio
-    public GameObject prefabFinal;            // Reemplaza cuando bloquesCompletos = true
+    [Tooltip("Prefab 3D que se instancia al inicio.")]
+    public GameObject prefabInicial;
 
-    [Header("Transform (EDITA EN VIVO)")]
+    [Tooltip("Prefab 3D que reemplaza al inicial cuando bloquesCompletos = true.")]
+    public GameObject prefabFinal;
+
+    [Header("Transform (EDITA MANUAL)")]
     public Vector3 worldPosition = Vector3.zero;
     public Vector3 worldRotationEuler = Vector3.zero;
     public Vector3 worldScale = Vector3.one;
 
-    [Header("Live Edit")]
-    [Tooltip("Si está activo, durante el Play la instancia seguirá estos valores cada frame.")]
-    public bool liveEditInPlay = true;
-
     [Header("Validación (GameManager)")]
-    [Tooltip("GameObject que tiene GestorValidacionGlobal.")]
+    [Tooltip("Arrastra aquí el GameObject que tiene GestorValidacionGlobal.")]
     public GameObject gameManager;
 
     [Header("Opciones")]
-    public bool instanciarEnAwake = true;     // Instancia apenas carga
-    public Color gizmoColor = new Color(0.2f, 0.8f, 1f, 0.6f);
-    public float gizmoSize = 0.2f;
+    public bool instanciarEnAwake = true;   // instancia apenas carga la escena
+    public bool liveEditInPlay = true;      // permite mover/rotar/escalar en vivo
+    public bool logsDiagnostico = true;     // logs cuando cambie el estado
 
     // ---- Internos ----
-    private GestorValidacionGlobal _validador;
+    private GestorValidacionGlobal _gestor;
     private GameObject _instanciaActual;
-    private bool _reemplazado = false;
+    private bool _yaReemplazo = false;
+    private bool? _ultimoEstado = null;     // para loguear solo cuando cambie
 
+    // ======================================================
     private void Awake()
     {
         if (gameManager != null)
-            _validador = gameManager.GetComponent<GestorValidacionGlobal>();
+            _gestor = gameManager.GetComponent<GestorValidacionGlobal>();
 
-        if (_validador == null)
+        if (_gestor == null)
             Debug.LogWarning("⚠️ [Facto] No se encontró GestorValidacionGlobal en el GameObject asignado.");
 
         if (instanciarEnAwake)
@@ -49,15 +50,30 @@ public class Facto : MonoBehaviour
 
     private void Update()
     {
-        // Edita en vivo durante el Play
+        // Edición en vivo de transform
         if (Application.isPlaying && liveEditInPlay && _instanciaActual != null)
-            AplicarTransformEnInstancia(_instanciaActual);
+            AplicarTransform(_instanciaActual);
 
-        // Swap cuando el gestor diga que todo está correcto
-        if (!_reemplazado && _validador != null && _validador.bloquesCompletos)
+        if (_yaReemplazo || _gestor == null) return;
+
+        // Diagnóstico: log solo cuando cambie el estado
+        if (logsDiagnostico)
+        {
+            if (_ultimoEstado != _gestor.bloquesCompletos)
+            {
+                _ultimoEstado = _gestor.bloquesCompletos;
+                Debug.Log($"[Facto] bloquesCompletos = {_gestor.bloquesCompletos}");
+            }
+        }
+
+        if (_gestor.bloquesCompletos)
+        {
             ReemplazarPorFinal();
+            _yaReemplazo = true;
+        }
     }
 
+    // ======================================================
     private void InstanciarInicial()
     {
         if (_instanciaActual != null || prefabInicial == null) return;
@@ -69,11 +85,9 @@ public class Facto : MonoBehaviour
 
     private void ReemplazarPorFinal()
     {
-        _reemplazado = true;
-
         if (prefabFinal == null)
         {
-            Debug.LogWarning("⚠️ [Facto] PrefabFinal no asignado. No se realiza el reemplazo.");
+            Debug.LogWarning("⚠️ [Facto] PrefabFinal no asignado, no se realiza reemplazo.");
             return;
         }
 
@@ -85,31 +99,35 @@ public class Facto : MonoBehaviour
 
         _instanciaActual = Instantiate(prefabFinal, worldPosition, Quaternion.Euler(worldRotationEuler));
         _instanciaActual.transform.localScale = worldScale;
-        // Debug.Log("[Facto] Prefab final instanciado.");
+
+        if (logsDiagnostico)
+            Debug.Log("[Facto] Cambio a prefabFinal realizado.");
     }
 
-    private void AplicarTransformEnInstancia(GameObject go)
+    private void AplicarTransform(GameObject go)
     {
         go.transform.SetPositionAndRotation(worldPosition, Quaternion.Euler(worldRotationEuler));
         go.transform.localScale = worldScale;
     }
 
-    // Botón útil para re-aplicar transform manualmente (desde el inspector con scripts que soporten buttons)
-    public void ReaplicarTransform()
+    // ======================================================
+    // 👉 Útil para forzar una re-evaluación desde un botón en el editor
+    public void ForceCheck()
     {
-        if (_instanciaActual != null)
-            AplicarTransformEnInstancia(_instanciaActual);
-    }
+        if (_gestor == null)
+        {
+            Debug.LogWarning("⚠️ [Facto] No hay GestorValidacionGlobal asignado.");
+            return;
+        }
 
-    // Gizmos para visualizar el punto/rotación en editor
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = gizmoColor;
-        Gizmos.DrawSphere(worldPosition, gizmoSize);
-
-        var rot = Quaternion.Euler(worldRotationEuler);
-        Gizmos.color = Color.red; Gizmos.DrawLine(worldPosition, worldPosition + rot * Vector3.right * gizmoSize * 3f);
-        Gizmos.color = Color.green; Gizmos.DrawLine(worldPosition, worldPosition + rot * Vector3.up * gizmoSize * 3f);
-        Gizmos.color = Color.blue; Gizmos.DrawLine(worldPosition, worldPosition + rot * Vector3.forward * gizmoSize * 3f);
+        if (!_yaReemplazo && _gestor.bloquesCompletos)
+        {
+            ReemplazarPorFinal();
+            _yaReemplazo = true;
+        }
+        else
+        {
+            Debug.Log($"[Facto] ForceCheck: bloquesCompletos = {_gestor.bloquesCompletos}, yaReemplazo = {_yaReemplazo}");
+        }
     }
 }
