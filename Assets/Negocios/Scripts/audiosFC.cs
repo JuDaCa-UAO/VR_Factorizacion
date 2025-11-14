@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // para el label del botón
+using TMPro;
+using UnityEngine.Video; // <-- para VideoPlayer
 
 [RequireComponent(typeof(AudioSource))]
 public class audiosFC : MonoBehaviour
@@ -17,16 +18,25 @@ public class audiosFC : MonoBehaviour
     public List<AudioClip> hintPlaylist = new List<AudioClip>();
 
     [Header("Cierre")]
-    public AudioClip audio4; // clip final cuando todos los bloques están correctos
+    public AudioClip audio4; // clip final cuando el rompecabezas está correcto (según GameManager)
 
     [Header("UI (opcional)")]
     public TextMeshProUGUI toggleButtonText; // Texto del botón Activar/Desactivar
 
-    // ====== VIDEO embebido en este script ======
     [Header("Video (embebido en Audios)")]
-    [SerializeField] private UnityEngine.UI.RawImage videoScreen; // contenedor visual del video (oculto al inicio)
-    [SerializeField] private UnityEngine.Video.VideoPlayer videoPlayer; // VideoPlayer
-   
+    [SerializeField] private RawImage videoScreen;         // contenedor visual del video (oculto al inicio)
+    [SerializeField] private VideoPlayer videoPlayer;      // VideoPlayer
+
+    [Header("Botón de pistas (opcional)")]
+    [SerializeField] public Button hintButton;
+
+    // ====== NUEVO: Validación via GameManager ======
+    [Header("Validación Global (GameManager)")]
+    [Tooltip("Arrastra aquí el GameObject que tiene GestorValidacionGlobal")]
+    public GameObject gameManager; // <- referencia al objeto que posee el Gestor
+    private GestorValidacionGlobal _gestor;  // <- cache del componente
+    [Tooltip("Si está activo, solo permitirá disparar el cierre cuando la playlist principal haya terminado.")]
+    public bool requerirFinDePlaylistParaCerrar = false;
 
     private AudioSource _as;
     private int _currentIndex = 0;
@@ -38,7 +48,6 @@ public class audiosFC : MonoBehaviour
     private bool _wasPlayingLastFrame = false;
 
     // Estado de pistas
-    [SerializeField] public Button hintButton;
     private bool _isHintMode = false;
     private int _currentHintIndex = 0;
     private bool _mainCompleted = false;
@@ -68,13 +77,25 @@ public class audiosFC : MonoBehaviour
         _as.playOnAwake = false;
         _as.loop = false;
 
-        // Configuración segura del Video al inicio
+        // Video oculto de inicio
         if (videoPlayer != null)
         {
-            videoPlayer.playOnAwake = false;        
-            videoPlayer.gameObject.SetActive(false); // que NO se oiga ni vea al inicio
+            videoPlayer.playOnAwake = false;
+            videoPlayer.gameObject.SetActive(false);
         }
         if (videoScreen != null) videoScreen.gameObject.SetActive(false);
+
+        // Obtener el Gestor desde el GameManager (si se asignó)
+        if (gameManager != null)
+        {
+            _gestor = gameManager.GetComponent<GestorValidacionGlobal>();
+            if (_gestor == null)
+                Debug.LogWarning("[audiosFC] El GameObject asignado no tiene GestorValidacionGlobal.");
+        }
+        else
+        {
+            Debug.LogWarning("[audiosFC] No se asignó GameManager para validación global.");
+        }
     }
 
     private void Start()
@@ -94,7 +115,7 @@ public class audiosFC : MonoBehaviour
 
     private void Update()
     {
-        // Avance automático SOLO para la lista principal
+        // 1) Avance automático SOLO para la lista principal (si no estamos en pistas)
         if (IsGloballyEnabled && !_isHintMode)
         {
             if (_wasPlayingLastFrame && !_as.isPlaying)
@@ -102,15 +123,24 @@ public class audiosFC : MonoBehaviour
                 // ¿era el ÚLTIMO clip del playlist?
                 if (_currentIndex >= playlist.Count - 1)
                 {
-                    // Marcar lista principal como completada y habilitar botón de pistas
-                    _mainCompleted = true;                        // <-- nuevo
-                    if (hintButton != null) hintButton.interactable = true; // <-- nuevo
-                    // Nos quedamos en silencio (no llamamos GoToNextClip)
+                    _mainCompleted = true;
+                    if (hintButton != null) hintButton.interactable = true;
+                    // se queda en silencio
                 }
                 else
                 {
                     GoToNextClip();
                 }
+            }
+        }
+
+        // 2) NUEVO: si el GameManager dice que el puzzle está completo -> dispara cierre (una sola vez)
+        if (!_closureStarted && _gestor != null && _gestor.bloquesCompletos)
+        {
+            if (!requerirFinDePlaylistParaCerrar || _mainCompleted)
+            {
+                _closureStarted = true;
+                StartCoroutine(ClosureSequence()); // audio4 -> espera 3s -> video
             }
         }
 
@@ -174,9 +204,7 @@ public class audiosFC : MonoBehaviour
     // ===== Botón de PISTAS =====
     public void PlayNextHint()
     {
-        // Si el botón está deshabilitado, no hará falta esta guardia, pero por seguridad:
-        if (!_mainCompleted) return; // <-- opcional, evita disparar pistas si no terminó la lista principal
-
+        if (!_mainCompleted) return; // no permitir hasta terminar la principal
         if (hintPlaylist == null || hintPlaylist.Count == 0) return;
 
         _isHintMode = true;
@@ -201,25 +229,19 @@ public class audiosFC : MonoBehaviour
     {
         if (hintFxPrefab == null) return;
 
-        // Si ya había un FX de una pista anterior, lo destruimos
         if (_currentHintFxInstance != null)
         {
             Destroy(_currentHintFxInstance);
             _currentHintFxInstance = null;
         }
 
-        // Posición
         Vector3 basePos = hintFxSpawnPoint != null ? hintFxSpawnPoint.position : transform.position;
         Vector3 finalPos = basePos + hintFxPositionOffset;
-
-        // Rotación
         Quaternion finalRot = Quaternion.Euler(hintFxRotationEuler);
 
-        // Instanciar
         _currentHintFxInstance = Instantiate(hintFxPrefab, finalPos, finalRot);
         _currentHintFxInstance.transform.localScale = hintFxScale;
 
-        // Corrutina para destruir el FX cuando termine el audio actual
         if (_hintFxCoroutine != null)
             StopCoroutine(_hintFxCoroutine);
         _hintFxCoroutine = StartCoroutine(DestroyHintFxWhenCurrentClipEnds());
@@ -234,7 +256,6 @@ public class audiosFC : MonoBehaviour
             waitTime = _as.clip.length;
         }
 
-        // Esperar lo que dura el clip de pista actual
         yield return new WaitForSeconds(waitTime);
 
         if (_currentHintFxInstance != null)
@@ -246,7 +267,6 @@ public class audiosFC : MonoBehaviour
         _hintFxCoroutine = null;
     }
 
-
     // ===== Botón ACTIVAR/DESACTIVAR =====
     public void ToggleActivate()
     {
@@ -254,7 +274,6 @@ public class audiosFC : MonoBehaviour
 
         if (IsGloballyEnabled)
         {
-            // DESACTIVAR
             _savedTime = _as.isPlaying ? _as.time : _savedTime;
             _as.Stop();
             _userPausedGlobally = true;
@@ -263,7 +282,6 @@ public class audiosFC : MonoBehaviour
         }
         else
         {
-            // ACTIVAR
             _globallyEnabled = true;
             _userPausedGlobally = false;
 
@@ -295,21 +313,13 @@ public class audiosFC : MonoBehaviour
         }
     }
 
-    // ====== CIERRE: llamado cuando TODOS los bloques están correctos ======
-    public void CheckAllBlocksSnapped()
-    {
-        if (_closureStarted) return;          // no repetir
-        if (!AllBlocksSnapped()) return;
-
-        _closureStarted = true;
-        StartCoroutine(ClosureSequence());    // audio4 -> esperar 3s -> video (con animación)
-    }
-
+    // ====== CIERRE: ahora gatillado por _gestor.bloquesCompletos ======
     private IEnumerator ClosureSequence()
     {
-        // salir de pistas y forzar audio4
+        // Salir de pistas
         _isHintMode = false;
 
+        // 1) Reproducir audio final (opcional)
         if (audio4 != null)
         {
             _as.Stop();
@@ -319,15 +329,12 @@ public class audiosFC : MonoBehaviour
             if (IsGloballyEnabled)
                 _as.Play();
 
-            // esperar a que termine audio4
             if (audio4.length > 0f)
                 yield return new WaitForSeconds(audio4.length);
         }
 
-        // +3 segundos
+        // 2) Espera 3s y muestra video
         yield return new WaitForSeconds(3f);
-
-        // Mostrar video (desde aquí controlamos todo lo visual/sonoro del video)
         ShowVideoWithAnimation();
     }
 
@@ -338,20 +345,9 @@ public class audiosFC : MonoBehaviour
 
         if (videoPlayer != null)
         {
-            
             videoPlayer.gameObject.SetActive(true);
             videoPlayer.Play(); // reproduce imagen + audio del video
         }
-
-       
-    }
-
-    // ====== Utilidades ======
-    private bool AllBlocksSnapped()
-    {
-        var blocks = Object.FindObjectsByType<BlockSnapState>(FindObjectsSortMode.None);
-        foreach (var b in blocks) if (!b.isSnapped) return false;
-        return true;
     }
 
     private void SetToggleLabel(bool desactivar)
