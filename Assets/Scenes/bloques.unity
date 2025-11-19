@@ -307,7 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 1852643090}
-  nextSceneName: nivel 1
+  nextSceneName: Tutorial
   playOnStart: 1
 --- !u!4 &1298632899
 Transform:
@@ -547,7 +547,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1852643089}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 5b1cc7b31f5666549a4a577da7c7a404, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 447e4dafb39ed8445a32940154c9258e, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
